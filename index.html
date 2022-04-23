@@ -56,7 +56,7 @@ var a = [
     var tblBody = document.createElement("tbody");
   
     // cells creation
-    for (var j = 100; j > 0; j--) {
+    for (var j = 100; j >= 0; j--) {
       // table row creation
       var row = document.createElement("tr");
   
@@ -103,7 +103,7 @@ var a = [
     var span =  document.createElement("span");
     var sSpan = "";
     list.forEach(el=>{
-      sSpan += el.s + "胜率："+ (el.count / 100).toFixed(2) + "%; "
+      sSpan += el.s + "胜率："+ (el.count / 102.01).toFixed(2) + "%; "
     });
     span.textContent = sSpan;
     body.appendChild(span);
