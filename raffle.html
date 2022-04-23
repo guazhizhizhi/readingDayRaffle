@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+table {border: none;border-collapse:collapse}
+td {max-width:10px;min-width:10px;max-height:10px;height:10px;white-space:nowrap;padding:0;font-size:8px}
+span {width:1000px; display:inline-block}
+</style>
+
+</head>
+<body>
+
+</body>
+<script defer>
+var a = [
+    { s: "店长", x: 63, y: 36, bg: null ,count: 0},
+    { s: "锦鲤", x: 22, y: 89, bg: null ,count: 0},
+    { s: "白羽", x: 24, y: 67, bg: null ,count: 0},
+    { s: "獭皇", x: 66, y: 33, bg: null ,count: 0},
+    { s: "五月", x: 47, y: 89, bg: null ,count: 0},
+    { s: "青疯", x: 69, y: 96, bg: null ,count: 0},
+    { s: "警长", x: 25, y: 40, bg: null ,count: 0},
+    { s: "呱吱", x: 42, y: 75, bg: null ,count: 0},
+    { s: "洋参", x: 0, y: 1, bg: null ,count: 0},
+    { s: "伊兰", x: 24, y: 65, bg: null ,count: 0},
+    { s: "鬼影", x: 21, y: 42, bg: null ,count: 0},
+    { s: "萝卜", x: 72, y: 94, bg: null ,count: 0},
+    { s: "男巫", x: 66, y: 99, bg: null ,count: 0},
+    { s: "猫王", x: 3, y: 67, bg: null ,count: 0},
+    { s: "轨轨", x: 32, y: 55, bg: null ,count: 0},
+    { s: "雕花", x: 45, y: 73, bg: null ,count: 0}
+  ];
+  
+  function selectColor(colorNum, colors) {
+    if (colors < 1) colors = 1; // defaults to one color - avoid divide by zero
+    return "hsl(" + ((colorNum * (360 / colors)) % 360) + ",100%,50%)";
+  }
+  
+  function generateColor(list) {
+    for (let i = 0; i < list.length; i++) {
+      list[i].bg = selectColor(i, list.length);
+    }
+    return list;
+  }
+  
+  function calDistance(x1, y1, x2, y2) {
+    return Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
+  }
+  
+  function tableCreate(list) {
+    //body reference
+    var body = document.getElementsByTagName("body")[0];
+  
+    // create elements <table> and a <tbody>
+    var tbl = document.createElement("table");
+    var tblBody = document.createElement("tbody");
+  
+    // cells creation
+    for (var j = 100; j > 0; j--) {
+      // table row creation
+      var row = document.createElement("tr");
+  
+      for (var i = 0; i < 101; i++) {
+        // create element <td> and text node
+        //Make text node the contents of <td> element
+        // put <td> at end of the table row
+        var cell = document.createElement("td");
+        let min = 999;
+        let minEL = null;
+        list.forEach((el) => {
+          let newDistance = calDistance(el.x, el.y, i, j);
+          if (newDistance < min) {
+            min = newDistance;
+            minEL = el;
+          }
+        });
+        minEL.count++;
+        if (min == 0) {
+          cell.appendChild(document.createTextNode(minEL.s));
+          cell.setAttribute("class", "solid");
+        } else {
+          cell.setAttribute("style", "background-color:" + minEL.bg);
+        }
+        cell.setAttribute(
+          "title",
+          "x:" + i + ";y:" + j + ";"
+        );
+        var cellText = document.createTextNode("");
+  
+        cell.appendChild(cellText);
+        row.appendChild(cell);
+      }
+  
+      //row added to end of table body
+      tblBody.appendChild(row);
+    }
+  
+    // append the <tbody> inside the <table>
+    tbl.appendChild(tblBody);
+    // put <table> in the <body>
+    body.appendChild(tbl);
+    
+    var span =  document.createElement("span");
+    var sSpan = "";
+    list.forEach(el=>{
+      sSpan += el.s + "胜率："+ (el.count / 100).toFixed(2) + "%; "
+    });
+    span.textContent = sSpan;
+    body.appendChild(span);
+  }
+  
+  var b = generateColor(a);
+  tableCreate(b);
+  
+</script>
+</html>
